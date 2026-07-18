@@ -59,6 +59,16 @@ codex
 
 Open the **Novome** marketplace, install **Novome**, then start a new CLI session.
 
+## Refresh after a plugin change
+
+When the GitHub branch or repository is updated, refresh the configured marketplace snapshot:
+
+```bash
+codex plugin marketplace upgrade novome
+```
+
+Then restart the ChatGPT desktop app. If the installed plugin still uses an older cached version, uninstall and reinstall **Novome** from Plugins and start a new Codex session.
+
 ## Install from a local clone
 
 ```bash
@@ -81,12 +91,13 @@ Fix the login bug.
 
 Expected behavior:
 
-1. Novome diagnoses Goal, Context, Constraints, and Verification.
+1. Before inspecting the workspace, Novome diagnoses Goal, Context, Constraints, and Verification from the task text.
 2. It chooses exactly one learning priority.
 3. It gives a micro-lesson of at most 80 words.
-4. It asks the learner for one concrete addition and stops before implementation.
+4. It asks the learner for one concrete addition and stops before repository search or implementation.
 5. After the learner responds, it produces a Codex-ready brief without inventing requirements.
-6. After the coding task, it reflects only on visible evidence from the current session.
+6. Only then may it inspect the repository and continue the coding task.
+7. After the coding task, it reflects only on visible evidence from the current session.
 
 A valid learner response for the canonical test is:
 
