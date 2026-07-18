@@ -30,44 +30,57 @@ Official references:
 - [Use Codex plugins](https://developers.openai.com/codex/plugins)
 - [Build Codex skills](https://developers.openai.com/codex/skills)
 
-## Install from GitHub
+## Install by asking Codex
+
+The preferred Windows workflow is to let a **local Codex session** perform the installation. Open this repository in Codex and ask:
+
+```text
+Install or update Novome on this computer, run scripts/install-novome.ps1, verify the result, and do not ask me to copy terminal commands.
+```
+
+Codex will run the repository installer, refresh the marketplace, reinstall the plugin through the official CLI, and verify that it is installed and enabled. A normal approval prompt may appear before local profile changes are made.
+
+This must run in a local environment. A Codex cloud container cannot modify the Codex profile or plugin cache on the user's desktop computer.
+
+See [Install Novome by asking Codex](docs/INSTALL_WITH_CODEX.md).
+
+## Manual install from GitHub
 
 Run in a terminal that has the Codex CLI:
 
 ```bash
 codex plugin marketplace add avarba/Novome --ref main
-codex plugin marketplace list
+codex plugin add novome --marketplace novome
+codex plugin list --marketplace novome --json
 ```
 
-Then choose one installation surface.
+Then restart Codex and start a new session.
 
 ### ChatGPT desktop app
 
 1. Restart the ChatGPT desktop app.
 2. Select **Codex**.
-3. Open **Plugins**.
-4. Select the **Novome** marketplace.
-5. Open **Novome** and select the plus button to install it.
-6. Start a new Codex chat.
+3. Start a new Codex chat.
 
 ### Codex CLI
 
 ```bash
 codex
-/plugins
 ```
 
-Open the **Novome** marketplace, install **Novome**, then start a new CLI session.
+Start a new CLI session after installation.
 
 ## Refresh after a plugin change
 
-When the GitHub branch or repository is updated, refresh the configured marketplace snapshot:
+When the GitHub branch or repository is updated, refresh and reinstall through Codex:
 
 ```bash
 codex plugin marketplace upgrade novome
+codex plugin remove novome --marketplace novome
+codex plugin add novome --marketplace novome
 ```
 
-Then restart the ChatGPT desktop app. If the installed plugin still uses an older cached version, uninstall and reinstall **Novome** from Plugins and start a new Codex session.
+Alternatively, ask a local Codex session to run `scripts/install-novome.ps1` again.
 
 ## Install from a local clone
 
@@ -75,9 +88,10 @@ Then restart the ChatGPT desktop app. If the installed plugin still uses an olde
 git clone https://github.com/avarba/Novome.git
 cd Novome
 codex plugin marketplace add .
+codex plugin add novome --marketplace novome
 ```
 
-Restart the ChatGPT desktop app or open `/plugins` in Codex CLI, install **Novome**, and start a new session.
+Restart Codex and start a new session.
 
 ## Five-minute judge test
 
@@ -120,6 +134,8 @@ novome-coach
 .agents/plugins/marketplace.json   Marketplace catalog
 skills/novome-coach/SKILL.md       Adaptive coaching workflow
 skills/novome-coach/agents/openai.yaml
+scripts/install-novome.ps1         Codex-managed Windows installer
+docs/INSTALL_WITH_CODEX.md         Agent-managed installation guide
 docs/CORE_1_VALIDATION.md          Format and behavior validation report
 examples/demo-session.md           Judge-ready demonstration
 evals/cases.yaml                   Behavioral evaluation cases
