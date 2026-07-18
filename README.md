@@ -32,13 +32,19 @@ Official references:
 
 ## Install by asking Codex
 
-The preferred Windows workflow is to let a **local Codex session** perform the installation. Open this repository in Codex and ask:
+The repository contains a zero-install bootstrap skill under `.agents/skills`. Open the **Novome repository** in a **local Codex session** and invoke:
+
+```text
+$novome-installer
+```
+
+Codex will run the repository installer, refresh the marketplace, reinstall the plugin through the official CLI, and verify that it is installed and enabled. The user does not need to copy PowerShell commands or click through the Plugins UI. A normal approval prompt may appear before Codex changes the local profile.
+
+The equivalent natural-language request is:
 
 ```text
 Install or update Novome on this computer, run scripts/install-novome.ps1, verify the result, and do not ask me to copy terminal commands.
 ```
-
-Codex will run the repository installer, refresh the marketplace, reinstall the plugin through the official CLI, and verify that it is installed and enabled. A normal approval prompt may appear before local profile changes are made.
 
 This must run in a local environment. A Codex cloud container cannot modify the Codex profile or plugin cache on the user's desktop computer.
 
@@ -80,7 +86,7 @@ codex plugin remove novome --marketplace novome
 codex plugin add novome --marketplace novome
 ```
 
-Alternatively, ask a local Codex session to run `scripts/install-novome.ps1` again.
+Alternatively, open the repository in local Codex and invoke `$novome-installer` again.
 
 ## Install from a local clone
 
@@ -130,17 +136,18 @@ novome-coach
 ## Repository structure
 
 ```text
-.codex-plugin/plugin.json          Plugin manifest
-.agents/plugins/marketplace.json   Marketplace catalog
-skills/novome-coach/SKILL.md       Adaptive coaching workflow
+.codex-plugin/plugin.json                  Plugin manifest
+.agents/plugins/marketplace.json           Marketplace catalog
+.agents/skills/novome-installer/SKILL.md   Zero-install bootstrap skill
+skills/novome-coach/SKILL.md               Adaptive coaching workflow
 skills/novome-coach/agents/openai.yaml
-scripts/install-novome.ps1         Codex-managed Windows installer
-docs/INSTALL_WITH_CODEX.md         Agent-managed installation guide
-docs/CORE_1_VALIDATION.md          Format and behavior validation report
-examples/demo-session.md           Judge-ready demonstration
-evals/cases.yaml                   Behavioral evaluation cases
-docs/PROJECT_CHARTER.md            Product scope and definition of done
-AGENTS.md                           Instructions for Codex contributors
+scripts/install-novome.ps1                 Codex-managed Windows installer
+docs/INSTALL_WITH_CODEX.md                 Agent-managed installation guide
+docs/CORE_1_VALIDATION.md                  Format and behavior validation report
+examples/demo-session.md                   Judge-ready demonstration
+evals/cases.yaml                           Behavioral evaluation cases
+docs/PROJECT_CHARTER.md                    Product scope and definition of done
+AGENTS.md                                   Instructions for Codex contributors
 ```
 
 ## Version 0 boundaries
