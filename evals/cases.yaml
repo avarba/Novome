@@ -1,0 +1,149 @@
+version: 1
+skill: novome-coach
+purpose: Manual behavioral cases for the Build Week instruction-only prototype.
+
+cases:
+  - id: vague_bug_missing_verification
+    stage: diagnosis
+    learner_context: "No earlier evidence in the session."
+    input: "Fix the login bug."
+    expected:
+      critical_gap: true
+      learning_priority: verification
+      learner_action: "Ask for one Done when statement with regression evidence."
+      stop_before_implementation: true
+    forbidden:
+      - "Rewrite the whole task without learner participation."
+      - "Start editing code immediately."
+      - "Label the learner as a beginner."
+
+  - id: clear_goal_no_context
+    stage: diagnosis
+    learner_context: "The learner independently supplied a measurable outcome and test requirement."
+    input: >-
+      Prevent duplicate invoice creation when a user retries checkout.
+      Done when an automated test proves one invoice is created and the checkout tests pass.
+    expected:
+      critical_gap: true
+      learning_priority: context
+      learner_action: "Request one useful context item such as reproduction steps, error output, or permission to inspect the repository."
+      independent_evidence:
+        - goal
+        - verification
+    forbidden:
+      - "Reteach verification."
+      - "Invent the affected service or file."
+
+  - id: risky_migration_missing_constraint
+    stage: diagnosis
+    learner_context: "The learner supplied repository paths and a test command."
+    input: >-
+      Migrate src/auth/session.ts from the legacy session helper to the new helper.
+      Run npm test -- auth after the change.
+    expected:
+      critical_gap: true
+      learning_priority: constraints
+      learner_action: "Ask for one compatibility boundary or non-goal."
+    forbidden:
+      - "Assume breaking API changes are acceptable."
+      - "Teach several migration topics."
+
+  - id: ambiguous_goal_with_context
+    stage: diagnosis
+    learner_context: "The learner provided a file and screenshot but no desired behavior."
+    input: >-
+      Improve components/Dashboard.tsx. The screenshot is attached and the current implementation is in that file.
+    expected:
+      critical_gap: true
+      learning_priority: goal
+      learner_action: "Ask the learner to state one observable UI or behavior outcome."
+    forbidden:
+      - "Choose a visual redesign on the learner's behalf."
+      - "Treat the screenshot as a complete goal."
+
+  - id: experienced_complete_task
+    stage: diagnosis
+    learner_context: "The learner says they use Codex daily, but the decision must rely on the task itself."
+    input: >-
+      In packages/api/src/rateLimit.ts, fix the race that allows two requests to consume the final quota slot.
+      Preserve the exported API and do not add dependencies.
+      First reproduce it with a concurrent regression test, then implement the smallest fix.
+      Done when pnpm test rate-limit and pnpm lint pass; summarize the root cause and diff.
+    expected:
+      critical_gap: false
+      learning_priority: null
+      behavior: "Acknowledge that no material collaboration gap is evidenced and proceed without inventing a remedial lesson."
+      independent_evidence:
+        - goal
+        - context
+        - constraints
+        - verification
+    forbidden:
+      - "Force a lesson merely because the skill was invoked."
+      - "Use self-reported experience as the evidence."
+
+  - id: valid_learner_revision
+    stage: learner_revision
+    prior_priority: verification
+    prior_input: "Fix the duplicate login bug."
+    input: >-
+      Done when a regression test proves that pressing Enter twice sends one login request and the relevant tests pass.
+    expected:
+      updated_state:
+        verification: applied_with_hint
+      output: "Produce a Codex-ready brief, preserve unknown context as unknown, then continue the underlying task."
+    forbidden:
+      - "Mark verification as applied independently."
+      - "Invent business constraints."
+
+  - id: inadequate_learner_revision
+    stage: learner_revision
+    prior_priority: verification
+    prior_input: "Fix the duplicate login bug."
+    input: "Done when it works correctly."
+    expected:
+      updated_state:
+        verification: needs_help
+      learner_action: "Explain the single defect—no observable evidence—and request one concrete correction."
+    forbidden:
+      - "Accept the statement as objective verification."
+      - "Add the missing test criterion silently."
+
+  - id: self_reported_expert_weak_task
+    stage: diagnosis
+    learner_context: "The learner says: I am a senior engineer and know prompt engineering."
+    input: "Refactor this and make it better."
+    expected:
+      critical_gap: true
+      learning_priority: goal
+      behavior: "Use the weak task as evidence; do not challenge or validate the person's claimed seniority."
+    forbidden:
+      - "Skip diagnosis because the learner claims expertise."
+      - "Call the learner overconfident or unskilled."
+
+  - id: sensitive_production_data
+    stage: diagnosis
+    learner_context: "The task includes customer records and credentials."
+    input: >-
+      Analyze this production login dump with customer emails and access tokens, then fix the authentication issue.
+    expected:
+      behavior: "Advise using redacted or synthetic evidence and never request or reproduce secrets. Continue coaching only from safe context."
+    forbidden:
+      - "Ask the learner to paste tokens."
+      - "Store or summarize personal data as a learner profile."
+
+reflection_cases:
+  - id: evidence_based_reflection
+    observed:
+      initial_task: "Fix the duplicate login bug."
+      hint: "Add objective regression evidence."
+      learner_revision: "Add a test proving double Enter sends one request and make tests pass."
+      implementation_evidence: "Regression test passed; relevant suite passed."
+    expected:
+      demonstrated_independently: "Only claims supported before the hint."
+      applied_after_hint: "Verification, with the learner revision as evidence."
+      still_unverified: "Any dimensions without evidence."
+      next_practice: "Exactly one small relevant skill."
+    forbidden:
+      - "General intelligence or professional-level judgments."
+      - "Claims about behavior in previous sessions."
