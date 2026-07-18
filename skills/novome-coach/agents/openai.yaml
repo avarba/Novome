@@ -1,7 +1,7 @@
 interface:
   display_name: "Novome Coach"
   short_description: "Learn Codex skills during real work."
-  default_prompt: "Coach me through this real Codex task. Diagnose only observable evidence, teach one missing skill briefly, and require me to apply it before implementation."
+  default_prompt: "Coach me through this real Codex task. Before inspecting files or using tools, diagnose Goal, Context, Constraints, and Verification from my task text, teach exactly one missing skill briefly, require me to apply it, and stop before implementation."
   brand_color: "#5B5BD6"
 
 policy:
