@@ -56,7 +56,7 @@ Files:
 File: `evals/cases.yaml`
 
 - YAML parses successfully.
-- Nine diagnosis/revision cases and one reflection case are present.
+- Diagnosis, revision, privacy, workspace-mismatch, and reflection cases are present.
 - The evals consistently require one learning priority, learner participation, observable evidence, and no permanent profile.
 
 ## Concrete contradictions fixed
@@ -87,27 +87,68 @@ The README now distinguishes supported surfaces:
 
 It explicitly states that plugins are not available in Chat mode, the Codex IDE extension, or mobile, and that a new session is required after installation.
 
+### 4. Repository inspection displaced the learning cycle
+
+The first desktop runtime test successfully loaded `$novome-coach`, but the model searched the currently open knowledge-base workspace and returned a repository-location troubleshooting question. It did not produce the required four-dimension diagnosis, one micro-lesson, or learner step.
+
+This confirmed installation and explicit invocation, but failed the canonical behavior test.
+
+The skill now requires that the first response:
+
+1. uses the task text before any repository tools;
+2. completes the four-dimension diagnosis;
+3. teaches exactly one missing skill;
+4. asks for one learner action and stops;
+5. treats a missing or mismatched workspace as a Context gap rather than a reason to skip coaching.
+
+A dedicated `mismatched_workspace_still_coaches` regression case was added.
+
 ## Behavior review
 
 The canonical cycle is internally consistent after the fixes:
 
 1. `$novome-coach` receives a real but weak task.
-2. Novome evaluates Goal, Context, Constraints, and Verification.
+2. Novome evaluates Goal, Context, Constraints, and Verification before inspecting the workspace.
 3. It selects one priority and gives one micro-lesson of at most 80 words.
-4. It requests one learner contribution and stops before implementation.
+4. It requests one learner contribution and stops before implementation or repository search.
 5. It re-evaluates the contribution.
 6. It produces a task brief that marks unknowns and separates learner input from repository evidence.
-7. It continues the underlying Codex task.
+7. Only then does it inspect the repository and continue the underlying task.
 8. It reflects only on evidence visible in the current session.
 
-## Manual verification still required
+## Runtime status
 
-The following cannot be completed through the GitHub connector and must be performed on a supported Codex surface:
+Confirmed:
 
-1. Run the marketplace add command in a terminal with Codex CLI.
-2. Install Novome from Plugins in the ChatGPT desktop app or `/plugins` in Codex CLI.
-3. Start a new session and confirm `$novome-coach` appears.
-4. Run the canonical five-minute judge test.
-5. Capture the `/feedback` Session ID required for the Build Week submission.
+- marketplace installation succeeded;
+- the Novome plugin appeared in the ChatGPT desktop app;
+- `$novome-coach` was recognized and invoked;
+- the skill ran inside a Codex session.
 
-No further design or infrastructure change is required before this manual installation test.
+Needs re-test after marketplace upgrade:
+
+- first response follows the required diagnosis → micro-lesson → learner-step structure;
+- no workspace inspection occurs before the learner action;
+- the canonical task selects Verification as the first priority.
+
+## Manual re-test required
+
+Refresh the Git-backed marketplace snapshot:
+
+```bash
+codex plugin marketplace upgrade novome
+```
+
+If the installed plugin still uses the prior cached copy, uninstall and reinstall Novome from the Plugins Directory, restart the ChatGPT desktop app, and start a new Codex session.
+
+Run:
+
+```text
+$novome-coach
+
+Fix the login bug.
+```
+
+Expected first response: a Novome diagnosis of Goal, Context, Constraints, and Verification; one Verification micro-lesson; one request for a concrete `Done when` statement; no repository search or implementation.
+
+After the final accepted version is merged, capture the `/feedback` Session ID required for the Build Week submission.
