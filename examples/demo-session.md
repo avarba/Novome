@@ -53,16 +53,16 @@ Goal
 Prevent duplicate login submissions when the user presses Enter twice.
 
 Context
-Inspect the repository to locate the login form, submission handler, authentication call, and existing test conventions. The original task did not identify a file.
+The affected file and exact reproduction location are unknown. Inspect the repository to locate the login form, submission handler, authentication call, and existing test conventions before editing.
 
 Constraints
-Preserve the public authentication API and avoid adding dependencies unless repository evidence shows they are required.
+No learner-supplied constraints. Apply only constraints confirmed in repository instructions or existing code contracts; otherwise keep this field marked as not observed.
 
 Done when
 A regression test proves that pressing Enter twice sends one login request, and the relevant test suite passes.
 ```
 
-The brief must clearly distinguish learner-provided requirements from repository-derived context. Codex then inspects the repository, makes a focused fix, runs tests, and summarizes the result.
+The brief must clearly distinguish learner-provided requirements, unknowns, and repository-derived evidence. Codex then inspects the repository, makes a focused fix, runs tests, and summarizes the result.
 
 ## Step 3 — reflection
 
@@ -84,7 +84,7 @@ Applied after a hint
 - Verification: you added a precise regression condition requiring one request after a double Enter press and a passing test suite.
 
 Still unverified
-- Constraints were not independently supplied; any constraints used came from repository evidence or conservative defaults.
+- Constraints were not independently supplied. Any constraints used during implementation must be tied to visible repository evidence.
 
 Next practice
 - On the next task, include the minimum relevant context: reproduction steps and the likely component or error output.
@@ -101,6 +101,7 @@ The demo fails if Novome:
 - claims to remember the learner across sessions;
 - starts coding before asking for the learner step;
 - reports a learned skill without visible evidence;
+- invents constraints or business requirements;
 - requests external account access.
 
 ## Three-minute video outline
