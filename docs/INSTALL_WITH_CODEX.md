@@ -6,9 +6,17 @@ The user does not need to operate PowerShell or the Plugins UI manually. A **loc
 
 Plugin installation updates the local Codex profile and cache under the user's home directory. A Codex cloud chat runs in a separate container, so it can install tools only inside that container; it cannot modify the ChatGPT desktop or Codex CLI installation on the user's Windows computer.
 
-## One natural-language request
+## Zero-install bootstrap
 
-Open this repository in a local Codex session and send:
+Codex automatically discovers repository skills under `.agents/skills`. The Novome repository includes an explicit bootstrap skill, so after opening this repository in local Codex the user can invoke:
+
+```text
+$novome-installer
+```
+
+No Novome plugin must already be installed for this bootstrap skill to appear. It belongs to the repository itself.
+
+The equivalent natural-language request is:
 
 ```text
 Install or update Novome on this computer, run scripts/install-novome.ps1, verify the result, and do not ask me to copy terminal commands.
@@ -51,6 +59,6 @@ $novome-coach
 Fix the login bug.
 ```
 
-## Zero-install option for cloud or repository development
+## Cloud mode
 
-Codex also discovers repository-scoped skills placed under `.agents/skills`. That mode requires no plugin installation, but the skill is available only while Codex is working inside a repository that contains it. It is useful for development and cloud demonstrations; the plugin remains the correct distribution format when Novome should be available across unrelated repositories.
+The repository bootstrap skill is visible in Codex cloud because the repository is checked out there, but a cloud container cannot install the plugin into the user's desktop profile. In cloud mode, `$novome-installer` must report that limitation rather than claim success. Repository-scoped skills remain useful for cloud development and demonstrations; the plugin is the distribution format for availability across unrelated local repositories.
