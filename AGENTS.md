@@ -44,6 +44,24 @@ Excluded unless a tracked issue explicitly changes scope:
 - Course catalog or LMS features.
 - Multi-agent orchestration.
 
+## Codex-managed installation
+
+When a user asks Codex to install, reinstall, update, or verify Novome on the local machine:
+
+1. Do not ask the user to copy individual PowerShell commands unless local execution is unavailable.
+2. Confirm the current environment is local. A cloud container cannot install into the user's desktop Codex profile.
+3. From this repository, run `scripts/install-novome.ps1` with PowerShell on Windows.
+4. The script must use the official `codex plugin marketplace` and `codex plugin` CLI commands, refresh the marketplace, reinstall the plugin, and verify the installed state.
+5. Ask for approval only when required by the local execution policy.
+6. After successful installation, tell the user to close the current Codex session and start a new one. Skills are loaded when a new session starts.
+7. Do not claim the plugin is verified until `codex plugin list --marketplace novome --json` reports it as installed and enabled.
+
+Suggested user request:
+
+```text
+Install or update Novome on this computer, run the repository installer, verify the result, and do not ask me to copy terminal commands.
+```
+
 ## Change rules
 
 - Inspect the existing repository before editing.

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Install Novome"
+  short_description: "Let local Codex install and verify Novome."
+  default_prompt: "Install or update Novome on this computer, run the repository installer, verify the result, and do not ask me to copy terminal commands."
+  brand_color: "#5B5BD6"
+
+policy:
+  allow_implicit_invocation: false

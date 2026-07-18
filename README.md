@@ -13,51 +13,117 @@ Version `0.1.0` focuses on four observable Codex collaboration skills:
 - **Constraints** — are boundaries and non-goals explicit?
 - **Verification** — is there objective evidence that the task is complete?
 
-Novome uses evidence from the current conversation only. It does not claim to know the learner's general professional level and does not persist a personal profile.
+Novome uses evidence from the current conversation and repository only. It does not claim to know the learner's general professional level and does not persist a personal profile.
 
-## Five-minute demo
+## Supported surfaces
 
-1. Install and enable the Novome plugin.
-2. Open any coding repository in Codex.
-3. Invoke the skill explicitly:
+Local marketplace plugins can be installed and tested in:
 
-   ```text
-   $novome-coach
+- **Codex in the ChatGPT desktop app**;
+- **Codex CLI** through `/plugins`.
 
-   Fix the login bug.
-   ```
+Plugins are not available in Chat mode, the Codex IDE extension, or mobile. After installation, start a new Codex chat or CLI session so the bundled skill is loaded.
 
-4. Novome diagnoses the task and selects exactly one missing skill.
-5. Complete the requested learning step.
-6. Let Codex execute the revised task.
-7. Invoke `$novome-coach` again and ask for a reflection.
+Official references:
 
-Expected learning cycle:
+- [Build Codex plugins](https://developers.openai.com/codex/plugins/build)
+- [Use Codex plugins](https://developers.openai.com/codex/plugins)
+- [Build Codex skills](https://developers.openai.com/codex/skills)
+
+## Install by asking Codex
+
+The repository contains a zero-install bootstrap skill under `.agents/skills`. Open the **Novome repository** in a **local Codex session** and invoke:
 
 ```text
-real task -> diagnosis -> one micro-lesson -> learner revision -> Codex execution -> reflection
+$novome-installer
 ```
 
-## Install for local testing
+Codex will run the repository installer, refresh the marketplace, reinstall the plugin through the official CLI, and verify that it is installed and enabled. The user does not need to copy PowerShell commands or click through the Plugins UI. A normal approval prompt may appear before Codex changes the local profile.
 
-### From GitHub
+The equivalent natural-language request is:
+
+```text
+Install or update Novome on this computer, run scripts/install-novome.ps1, verify the result, and do not ask me to copy terminal commands.
+```
+
+This must run in a local environment. A Codex cloud container cannot modify the Codex profile or plugin cache on the user's desktop computer.
+
+See [Install Novome by asking Codex](docs/INSTALL_WITH_CODEX.md).
+
+## Manual install from GitHub
+
+Run in a terminal that has the Codex CLI:
 
 ```bash
 codex plugin marketplace add avarba/Novome --ref main
-codex plugin marketplace list
+codex plugin add novome --marketplace novome
+codex plugin list --marketplace novome --json
 ```
 
-Restart the ChatGPT desktop app, open **Codex → Plugins**, select the **Novome** marketplace, and install **Novome**.
+Then restart Codex and start a new session.
 
-### From a local clone
+### ChatGPT desktop app
+
+1. Restart the ChatGPT desktop app.
+2. Select **Codex**.
+3. Start a new Codex chat.
+
+### Codex CLI
+
+```bash
+codex
+```
+
+Start a new CLI session after installation.
+
+## Refresh after a plugin change
+
+When the GitHub branch or repository is updated, refresh and reinstall through Codex:
+
+```bash
+codex plugin marketplace upgrade novome
+codex plugin remove novome --marketplace novome
+codex plugin add novome --marketplace novome
+```
+
+Alternatively, open the repository in local Codex and invoke `$novome-installer` again.
+
+## Install from a local clone
 
 ```bash
 git clone https://github.com/avarba/Novome.git
 cd Novome
 codex plugin marketplace add .
+codex plugin add novome --marketplace novome
 ```
 
-Restart the ChatGPT desktop app and install **Novome** from the local marketplace.
+Restart Codex and start a new session.
+
+## Five-minute judge test
+
+In a new Codex session, invoke the skill explicitly:
+
+```text
+$novome-coach
+
+Fix the login bug.
+```
+
+Expected behavior:
+
+1. Before inspecting the workspace, Novome diagnoses Goal, Context, Constraints, and Verification from the task text.
+2. It chooses exactly one learning priority.
+3. It gives a micro-lesson of at most 80 words.
+4. It asks the learner for one concrete addition and stops before repository search or implementation.
+5. After the learner responds, it produces a Codex-ready brief without inventing requirements.
+6. Only then may it inspect the repository and continue the coding task.
+7. After the coding task, it reflects only on visible evidence from the current session.
+
+A valid learner response for the canonical test is:
+
+```text
+Done when: add a regression test proving that pressing Enter twice sends only one login request, and make the relevant test suite pass.
+```
 
 ## Explicit invocation
 
@@ -70,14 +136,18 @@ novome-coach
 ## Repository structure
 
 ```text
-.codex-plugin/plugin.json          Plugin manifest
-.agents/plugins/marketplace.json   Marketplace catalog
-skills/novome-coach/SKILL.md       Adaptive coaching workflow
+.codex-plugin/plugin.json                  Plugin manifest
+.agents/plugins/marketplace.json           Marketplace catalog
+.agents/skills/novome-installer/SKILL.md   Zero-install bootstrap skill
+skills/novome-coach/SKILL.md               Adaptive coaching workflow
 skills/novome-coach/agents/openai.yaml
-examples/demo-session.md           Judge-ready demonstration
-evals/cases.yaml                   Behavioral evaluation cases
-docs/PROJECT_CHARTER.md            Product scope and definition of done
-AGENTS.md                           Instructions for Codex contributors
+scripts/install-novome.ps1                 Codex-managed Windows installer
+docs/INSTALL_WITH_CODEX.md                 Agent-managed installation guide
+docs/CORE_1_VALIDATION.md                  Format and behavior validation report
+examples/demo-session.md                   Judge-ready demonstration
+evals/cases.yaml                           Behavioral evaluation cases
+docs/PROJECT_CHARTER.md                    Product scope and definition of done
+AGENTS.md                                   Instructions for Codex contributors
 ```
 
 ## Version 0 boundaries
@@ -86,7 +156,7 @@ Version 0 has no website, account system, database, external identity analysis, 
 
 ## Privacy
 
-Novome's instruction-only prototype works with the current Codex conversation. It does not introduce its own server or database and instructs Codex not to create persistent learner profiles.
+Novome's instruction-only prototype works with the current Codex conversation. It introduces no external server or database and instructs Codex not to create persistent learner profiles. Platform-level data handling remains governed by the ChatGPT or Codex service being used.
 
 ## License
 

@@ -1,51 +1,47 @@
-# First Codex task for Novome
+# Core 1 execution status
 
-Paste the prompt below into a new Codex task connected to `avarba/Novome`.
+The original instruction in this file asked the project owner to paste a validation prompt into Codex.
+
+That repository work has now been executed directly through the connected GitHub workflow on branch:
 
 ```text
-We are executing GitHub issue #1 in the public repository avarba/Novome.
-
-Goal:
-Validate and harden the smallest installable Novome Codex plugin before we build any demo application.
-
-Start by inspecting the entire repository, especially:
-- .codex-plugin/plugin.json
-- .agents/plugins/marketplace.json
-- skills/novome-coach/SKILL.md
-- skills/novome-coach/agents/openai.yaml
-- evals/cases.yaml
-- examples/demo-session.md
-- AGENTS.md
-
-Use the current official OpenAI Codex plugin and skill documentation as the source of truth.
-
-Required work:
-1. Validate all JSON and YAML syntax.
-2. Validate manifest fields, path rules, marketplace source resolution, skill frontmatter, and explicit invocation policy.
-3. Determine whether `codex plugin marketplace add avarba/Novome --ref main` can expose this repository as a marketplace and install the plugin from the repository root.
-4. Identify only concrete blockers or incompatibilities. Do not redesign the product.
-5. Make the smallest fixes needed for a reliable local installation.
-6. Review the canonical behavior in examples/demo-session.md against skills/novome-coach/SKILL.md.
-7. Review the behavioral cases in evals/cases.yaml and report any contradictions.
-8. Update README only when the verified installation process differs from the current instructions.
-9. Create a focused branch, commit the changes, push it, and open a draft pull request linked to issue #1.
-
-Hard scope restrictions:
-- Do not create a website.
-- Do not add a backend, database, authentication, MCP server, lifecycle hooks, external profile integrations, analytics, or persistent learner memory.
-- Keep version 0 instruction-only.
-- Do not weaken the rule that Novome teaches one skill at a time and requires learner participation.
-
-Definition of done:
-- Repository structure matches current official Codex requirements.
-- JSON and YAML are valid.
-- Exact local installation and invocation steps are documented.
-- Any assumptions that cannot be tested in this environment are explicitly listed.
-- A draft PR contains only the minimal required changes.
-
-Before ending, give me:
-A. the installation steps I must perform in the ChatGPT desktop app or terminal;
-B. the exact first `$novome-coach` test prompt;
-C. the draft PR link;
-D. anything I must do manually because Codex cannot access that UI.
+core-1-plugin-validation
 ```
+
+The completed work includes:
+
+- validating the current official Codex plugin and skill format;
+- checking JSON and YAML structure;
+- checking manifest and marketplace path rules;
+- checking explicit-only skill invocation policy;
+- identifying and fixing contradictions between the skill, demo, and evals;
+- correcting the supported-surface and installation documentation;
+- adding `docs/CORE_1_VALIDATION.md`.
+
+No prompt needs to be copied into Codex for this repository review.
+
+## Manual surface test still required
+
+GitHub access cannot operate the ChatGPT desktop or Codex CLI plugin browser. The project owner must perform only the following UI/runtime verification:
+
+```bash
+codex plugin marketplace add avarba/Novome --ref core-1-plugin-validation
+codex plugin marketplace list
+```
+
+Then install **Novome** through either:
+
+- ChatGPT desktop app: **Codex → Plugins → Novome → Install**;
+- Codex CLI: run `/plugins`, select the Novome marketplace, and install Novome.
+
+Start a new session and test:
+
+```text
+$novome-coach
+
+Fix the login bug.
+```
+
+The skill should diagnose one priority, teach one micro-lesson, request one learner addition, and stop before implementation.
+
+After the final accepted version is merged into `main`, use `--ref main` instead of the validation branch.
