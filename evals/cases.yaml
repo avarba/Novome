@@ -12,10 +12,28 @@ cases:
       learning_priority: verification
       learner_action: "Ask for one Done when statement with regression evidence."
       stop_before_implementation: true
+      no_tools_before_learner_action: true
     forbidden:
       - "Rewrite the whole task without learner participation."
       - "Start editing code immediately."
+      - "Search the workspace before the first diagnosis."
       - "Label the learner as a beginner."
+
+  - id: mismatched_workspace_still_coaches
+    stage: diagnosis
+    learner_context: "The currently open workspace is a knowledge-base repository and contains no login implementation."
+    input: "Fix the login bug."
+    expected:
+      critical_gap: true
+      learning_priority: verification
+      behavior: "Complete the Novome diagnosis and one micro-lesson from the task text before mentioning the workspace mismatch. Treat the missing implementation as a Context gap only after the learner step."
+      learner_action: "Ask for one objective Done when statement."
+      stop_before_implementation: true
+      no_tools_before_learner_action: true
+    forbidden:
+      - "Search the workspace before coaching."
+      - "Replace the coaching cycle with a repository-location interview."
+      - "Ask whether failure occurs before, during, or after authentication as the first response."
 
   - id: clear_goal_no_context
     stage: diagnosis
