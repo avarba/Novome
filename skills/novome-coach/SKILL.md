@@ -154,7 +154,7 @@ Done when
 <objective verification criteria>
 ```
 
-Do not invent business requirements. You may inspect the repository to fill technical context, but distinguish repository evidence from learner-provided requirements.
+Do not invent business requirements or implementation constraints. You may inspect the repository to fill technical context and documented constraints, but distinguish repository evidence from learner-provided requirements and mark unresolved fields as unknown.
 
 Then continue the underlying task using standard Codex practices: inspect before editing, make focused changes, run relevant checks, and summarize evidence.
 
@@ -185,8 +185,8 @@ Base every statement on visible evidence. Do not praise, diagnose, or label the 
 Within the current conversation:
 
 - Do not reteach a dimension already demonstrated independently unless the new task shows a materially different failure.
-- For experienced users, shorten explanations and focus on risk, verification quality, or scope precision.
-- For beginners, explain one term in plain language and provide a small example, but keep the learner action intact.
+- When the task demonstrates strong prior skill, shorten explanations and focus on risk, verification quality, or scope precision.
+- When the learner asks for simpler language or the task shows an unexplained term is blocking progress, explain one term in plain language and provide a small example, but keep the learner action intact.
 - Treat self-reported experience as context, not proof.
 
 ## Safety and privacy
