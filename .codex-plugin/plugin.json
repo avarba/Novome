@@ -1,0 +1,37 @@
+{
+  "name": "novome",
+  "version": "0.1.0",
+  "description": "Adaptive learning for Codex: diagnose one missing collaboration skill, teach it briefly, and verify application during real work.",
+  "author": {
+    "name": "Novome",
+    "email": "alexander@avarba.com"
+  },
+  "homepage": "https://novo.me.ai",
+  "repository": "https://github.com/avarba/Novome",
+  "license": "MIT",
+  "keywords": [
+    "education",
+    "learning",
+    "codex",
+    "coaching",
+    "adaptive-learning"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Novome",
+    "shortDescription": "Learn Codex while doing real work.",
+    "longDescription": "Novome observes how a learner frames a real Codex task, identifies one immediately relevant missing skill, delivers a concise micro-lesson, and checks whether the learner applies it.",
+    "developerName": "Novome",
+    "category": "Education",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://novo.me.ai",
+    "defaultPrompt": [
+      "Use Novome to coach me through this Codex task without doing the learning step for me.",
+      "Diagnose my task formulation and teach me the single most important missing skill."
+    ],
+    "brandColor": "#5B5BD6"
+  }
+}
